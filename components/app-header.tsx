@@ -75,7 +75,7 @@ export function AppHeader() {
               className="rounded-full h-9 w-9"
               aria-label="Quick actions"
             >
-              <Plus className="h-6 w-6" width={6} />
+              <Plus strokeWidth={3} className="h-6 w-6" width={6} />
             </Button>
           </DropdownMenuTrigger>
 
