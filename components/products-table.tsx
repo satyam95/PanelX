@@ -363,7 +363,6 @@ export default function ProductsTable() {
           </TableHeader>
           <TableBody>
             {products.map((product) => {
-              // ---- Normalize optional fields ----
               const tags = product.tags ?? [];
               const categories = product.category ?? [];
               const isOutOfStock = product.stock === 0;
@@ -398,20 +397,14 @@ export default function ProductsTable() {
                   hour: "2-digit",
                   minute: "2-digit",
                 });
-
               return (
                 <TableRow key={product.id} className="hover:bg-muted/40">
-                  {/* Checkbox */}
                   <TableCell className="text-center px-4">
                     <Checkbox checked={product.selected} />
                   </TableCell>
-
-                  {/* Image Placeholder */}
                   <TableCell className="text-center">
                     <div className="mx-auto h-10 w-10 rounded-sm border bg-primary/10" />
                   </TableCell>
-
-                  {/* Product Name */}
                   <TableCell className="text-center font-medium">
                     <div className="line-clamp-2 h-full text-wrap text-left">
                       {product.name || "—"}
@@ -428,13 +421,9 @@ export default function ProductsTable() {
                       </button>
                     </div>
                   </TableCell>
-
-                  {/* SKU */}
                   <TableCell className="text-center text-muted-foreground truncate">
                     {product.sku || "—"}
                   </TableCell>
-
-                  {/* Stock */}
                   <TableCell className="text-center">
                     {isOutOfStock ? (
                       <span className="inline-flex rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700">
@@ -446,15 +435,11 @@ export default function ProductsTable() {
                       </span>
                     )}
                   </TableCell>
-
-                  {/* Price */}
                   <TableCell className="text-center font-semibold">
                     {product.price > 0
                       ? `₹${product.price.toLocaleString()}`
                       : "—"}
                   </TableCell>
-
-                  {/* Category (MULTIPLE) */}
                   <TableCell className="text-center">
                     {categories.length > 0 ? (
                       <div className="flex justify-center gap-1 flex-wrap max-w-[180px] mx-auto">
@@ -478,8 +463,6 @@ export default function ProductsTable() {
                       </span>
                     )}
                   </TableCell>
-
-                  {/* Tags */}
                   <TableCell className="text-center">
                     {tags.length > 0 ? (
                       <div className="flex justify-center gap-1 flex-wrap max-w-[180px] mx-auto">
@@ -503,8 +486,6 @@ export default function ProductsTable() {
                       </span>
                     )}
                   </TableCell>
-
-                  {/* Date */}
                   <TableCell className="text-center">
                     {product.publishedAt ? (
                       <div className="flex flex-col items-center leading-tight">

@@ -29,11 +29,9 @@ export function NotificationsBell() {
           </Badge>
         </Button>
       </DropdownMenuTrigger>
-
       <DropdownMenuContent align="end" className="w-52">
         <DropdownMenuLabel>Notifications</DropdownMenuLabel>
         <DropdownMenuSeparator />
-
         {notifications.map((item) => (
           <DropdownMenuItem key={item.id} className="gap-2">
             <item.icon className="h-4 w-4 text-muted-foreground" />

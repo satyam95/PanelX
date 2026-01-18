@@ -47,13 +47,16 @@ const alerts = [
 
 const orderStatusData: OrderStatusItem[] = [
   { name: "Delivered", value: 6842, color: "#21C45D" },
-  { name: "Shipped",   value: 1241, color: "#3B82F6" },
-  { name: "Pending",   value: 509,  color: "#F0D411" },
-  { name: "Cancelled", value: 94,   color: "#EF4343" },
+  { name: "Shipped", value: 1241, color: "#3B82F6" },
+  { name: "Pending", value: 509, color: "#F0D411" },
+  { name: "Cancelled", value: 94, color: "#EF4343" },
 ];
 
 export default function HomePage() {
-  const totalOrders = orderStatusData.reduce((sum, item) => sum + item.value, 0);
+  const totalOrders = orderStatusData.reduce(
+    (sum, item) => sum + item.value,
+    0
+  );
   return (
     <div className="w-full space-y-6">
       <div className="w-full grid auto-rows-min gap-4 grid-cols-3">
@@ -133,69 +136,69 @@ export default function HomePage() {
           </div>
         </Card>
         <Card className="p-5">
-  <div className="flex flex-col h-full">
-    <div className="flex items-center justify-between mb-5">
-      <h3 className="font-semibold text-lg">Order Status</h3>
-      <EllipsisVertical size={20} className="text-muted-foreground" />
-    </div>
-
-    {/* Big total + quick stats */}
-    <div className="mb-6 space-y-1 text-center">
-      <div className="text-4xl font-bold tracking-tight">
-        {totalOrders.toLocaleString()}
-      </div>
-      <div className="text-sm text-muted-foreground">Total Orders • This Week</div>
-      
-      <div className="mt-3 grid grid-cols-2 gap-4 text-sm">
-        <div>
-          <div className="font-medium text-xs">Avg. Order Value</div>
-          <div className="text-primary">$42.80</div>
-        </div>
-        <div>
-          <div className="font-medium text-xs">Orders/Day</div>
-          <div className="text-primary">~1,526</div>
-        </div>
-      </div>
-    </div>
-
-    {/* Status bars – more breathing room */}
-    <div className="space-y-5 flex-1 mt-2">
-      {orderStatusData.map((status) => {
-        const percentage = ((status.value / totalOrders) * 100).toFixed(1);
-        return (
-          <div key={status.name} className="space-y-1.5">
-            <div className="flex justify-between items-center text-sm">
-              <div className="flex items-center gap-2.5">
-                <div
-                  className="w-4 h-4 rounded-full shadow-sm"
-                  style={{ backgroundColor: status.color }}
-                />
-                <span className="font-medium">{status.name}</span>
+          <div className="flex flex-col h-full">
+            <div className="flex items-center justify-between mb-5">
+              <h3 className="font-semibold text-lg">Order Status</h3>
+              <EllipsisVertical size={20} className="text-muted-foreground" />
+            </div>
+            <div className="mb-6 space-y-1 text-center">
+              <div className="text-4xl font-bold tracking-tight">
+                {totalOrders.toLocaleString()}
               </div>
-              <div className="flex items-center gap-3">
-                <span className="font-medium">
-                  {status.value.toLocaleString()}
-                </span>
-                <span className="text-xs text-muted-foreground w-14 text-right">
-                  {percentage}%
-                </span>
+              <div className="text-sm text-muted-foreground">
+                Total Orders • This Week
+              </div>
+
+              <div className="mt-3 grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <div className="font-medium text-xs">Avg. Order Value</div>
+                  <div className="text-primary">$42.80</div>
+                </div>
+                <div>
+                  <div className="font-medium text-xs">Orders/Day</div>
+                  <div className="text-primary">~1,526</div>
+                </div>
               </div>
             </div>
-            <div className="h-3 bg-muted/70 rounded-full overflow-hidden">
-              <div
-                className="h-full rounded-full transition-all duration-700 ease-out"
-                style={{
-                  width: `${percentage}%`,
-                  backgroundColor: status.color,
-                }}
-              />
+            <div className="space-y-5 flex-1 mt-2">
+              {orderStatusData.map((status) => {
+                const percentage = ((status.value / totalOrders) * 100).toFixed(
+                  1
+                );
+                return (
+                  <div key={status.name} className="space-y-1.5">
+                    <div className="flex justify-between items-center text-sm">
+                      <div className="flex items-center gap-2.5">
+                        <div
+                          className="w-4 h-4 rounded-full shadow-sm"
+                          style={{ backgroundColor: status.color }}
+                        />
+                        <span className="font-medium">{status.name}</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <span className="font-medium">
+                          {status.value.toLocaleString()}
+                        </span>
+                        <span className="text-xs text-muted-foreground w-14 text-right">
+                          {percentage}%
+                        </span>
+                      </div>
+                    </div>
+                    <div className="h-3 bg-muted/70 rounded-full overflow-hidden">
+                      <div
+                        className="h-full rounded-full transition-all duration-700 ease-out"
+                        style={{
+                          width: `${percentage}%`,
+                          backgroundColor: status.color,
+                        }}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
-        );
-      })}
-    </div>
-  </div>
-</Card>
+        </Card>
         <Card className="p-5">
           <div className="flex flex-col h-full">
             <div className="flex items-center justify-between mb-5">
@@ -211,10 +214,10 @@ export default function HomePage() {
                     item.status === "out"
                       ? "bg-rose-50/80 border-rose-300 shadow-sm"
                       : item.status === "low" && item.stock <= 3
-                      ? "bg-rose-50/70 border-rose-400 animate-pulse-subtle"
-                      : item.status === "low"
-                      ? "bg-amber-50/70 border-amber-300"
-                      : "bg-muted/40 border-muted"
+                        ? "bg-rose-50/70 border-rose-400 animate-pulse-subtle"
+                        : item.status === "low"
+                          ? "bg-amber-50/70 border-amber-300"
+                          : "bg-muted/40 border-muted"
                   )}
                 >
                   <div className="flex justify-between items-start gap-3">
@@ -258,7 +261,7 @@ export default function HomePage() {
       </div>
       <Card className="p-5">
         <div className="font-semibold text-lg">Recent Orders</div>
-        <OrderTable />
+        <OrderTable limit={6} />
       </Card>
     </div>
   );

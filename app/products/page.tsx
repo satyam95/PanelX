@@ -1,5 +1,5 @@
 import ProductsTable from "@/components/products-table";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { EllipsisVertical } from "lucide-react";
 
 export default function ProductsPage() {

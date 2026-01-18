@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { EllipsisVertical, ArrowUp, ArrowDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface StatCardProps {
   title: string;
   period?: string;
-  mainValue?: string | number; 
+  mainValue?: string | number;
   mainValueClassName?: string;
   changeValue?: string | number;
   changeIcon?: "up" | "down" | null;
@@ -51,7 +51,9 @@ export function StatCard({
             <div className="font-semibold text-lg leading-none">{title}</div>
             <EllipsisVertical size={20} className="text-muted-foreground" />
           </div>
-          <div className="text-muted-foreground text-sm leading-none">{period}</div>
+          <div className="text-muted-foreground text-sm leading-none">
+            {period}
+          </div>
         </div>
 
         {/* Main Content */}
@@ -60,12 +62,19 @@ export function StatCard({
         ) : (
           <div className="space-y-2">
             <div className="flex items-center gap-3 flex-wrap">
-              <div className={cn("font-bold text-3xl leading-none", mainValueClassName)}>
+              <div
+                className={cn(
+                  "font-bold text-3xl leading-none",
+                  mainValueClassName
+                )}
+              >
                 {mainValue}
               </div>
 
               {changeValue && (
-                <div className={cn("flex items-center gap-1", getChangeColor())}>
+                <div
+                  className={cn("flex items-center gap-1", getChangeColor())}
+                >
                   {getIcon()}
                   <span className="font-medium">{changeValue}</span>
                 </div>
@@ -74,7 +83,8 @@ export function StatCard({
 
             {previousValue && (
               <div className="text-muted-foreground text-sm leading-none">
-                Previous 7 days <span className="font-bold">{previousValue}</span>
+                Previous 7 days{" "}
+                <span className="font-bold">{previousValue}</span>
               </div>
             )}
           </div>

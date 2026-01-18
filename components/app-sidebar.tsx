@@ -1,4 +1,3 @@
-// components/app-sidebar.tsx
 "use client";
 
 import * as React from "react";
@@ -63,6 +62,7 @@ export const data: SidebarData = {
       items: [
         { title: "Products", url: "/products" },
         { title: "Categories", url: "/categories" },
+        { title: "Tags", url: "/tags" },
         { title: "Attributes", url: "/attributes" },
       ],
     },
@@ -96,7 +96,6 @@ export const data: SidebarData = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname();
-
   return (
     <Sidebar {...props}>
       <SidebarHeader>
@@ -116,7 +115,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
-
       <SidebarContent>
         <SidebarGroup>
           <SidebarMenu className="gap-1">
@@ -126,7 +124,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 item.items?.some((sub) => pathname.startsWith(sub.url)) ??
                 false;
               const hasItems = item.items && item.items.length > 0;
-
               return (
                 <Collapsible
                   key={item.title}
@@ -134,7 +131,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   className="group/collapsible"
                 >
                   <SidebarMenuItem>
-                    {/* Always use asChild=true on CollapsibleTrigger */}
                     <CollapsibleTrigger asChild>
                       {hasUrl ? (
                         <SidebarMenuButton
@@ -169,7 +165,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                         </SidebarMenuButton>
                       )}
                     </CollapsibleTrigger>
-
                     {hasItems && (
                       <CollapsibleContent>
                         <SidebarMenuSub>
