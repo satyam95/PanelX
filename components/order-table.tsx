@@ -196,7 +196,7 @@ const statusColorMap: Record<OrderStatus, string> = {
   Cancelled: "text-[#EF4343]",
 };
 
-export function OrderTable({ limit }: OrderTableProps = {}) {
+export function OrderTable({ limit }: OrderTableProps) {
   const displayedOrders =
     limit && limit > 0 ? allOrders.slice(0, limit) : allOrders;
   return (
