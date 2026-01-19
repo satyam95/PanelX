@@ -277,7 +277,7 @@ export function CustomerTable({ limit }: CustomerTableProps) {
             </TableCell>
             <TableCell className="text-center">{item.id}</TableCell>
             <TableCell className="">
-              <div className="flex flex-col gap-1">
+              <div className="flex flex-col font-medium gap-1">
                 <div className="line-clamp-2 h-full text-wrap text-left">
                   {item.name}
                 </div>

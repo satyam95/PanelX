@@ -188,10 +188,10 @@ export function UsersTable({ limit }: UsersTableProps) {
                 </div>
               </div>
             </TableCell>
-            <TableCell className="text-xs text-muted-foreground text-center">
+            <TableCell className="text-sm text-muted-foreground text-center">
               {user.email}
             </TableCell>
-            <TableCell className="text-xs text-muted-foreground text-center">
+            <TableCell className="text-sm text-muted-foreground text-center">
               {user.phone}
             </TableCell>
             <TableCell className="text-center">

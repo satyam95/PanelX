@@ -246,7 +246,7 @@ export function OrderTable({ limit }: OrderTableProps) {
               <Checkbox />
             </TableCell>
             <TableCell className="text-center">{item.orderId}</TableCell>
-            <TableCell className="">
+            <TableCell className="font-medium">
               <div className="flex items-center gap-3">
                 <div className="min-w-10 min-h-10 border rounded-sm bg-primary/10" />
                 <div>
