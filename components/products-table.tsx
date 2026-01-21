@@ -1,3 +1,4 @@
+"use client";
 import { ChevronDown, ImageIcon, Plus, Search } from "lucide-react";
 import { Checkbox } from "./ui/checkbox";
 import {
@@ -27,6 +28,9 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { Input } from "./ui/input";
+import { useState } from "react";
+import ProductDetailsSheet from "./product-details-sheet";
+import Link from "next/link";
 
 type Product = {
   id: string;
@@ -171,6 +175,8 @@ export const products: Product[] = [
 ];
 
 export default function ProductsTable() {
+  const [open, setOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
@@ -184,7 +190,7 @@ export default function ProductsTable() {
             className={cn(
               "!rounded-md px-4 py-1.5 text-sm min-w-26",
               "data-[state=on]:bg-white data-[state=on]:text-primary data-[state=on]:shadow-sm",
-              "data-[state=off]:text-muted-foreground"
+              "data-[state=off]:text-muted-foreground",
             )}
           >
             All
@@ -195,7 +201,7 @@ export default function ProductsTable() {
             className={cn(
               "!rounded-md px-4 py-1.5 text-sm min-w-26",
               "data-[state=on]:bg-white data-[state=on]:text-primary data-[state=on]:shadow-sm",
-              "data-[state=off]:text-muted-foreground"
+              "data-[state=off]:text-muted-foreground",
             )}
           >
             Published
@@ -206,7 +212,7 @@ export default function ProductsTable() {
             className={cn(
               "!rounded-md px-4 py-1.5 text-sm min-w-26",
               "data-[state=on]:bg-white data-[state=on]:text-primary data-[state=on]:shadow-sm",
-              "data-[state=off]:text-muted-foreground"
+              "data-[state=off]:text-muted-foreground",
             )}
           >
             Draft
@@ -217,16 +223,18 @@ export default function ProductsTable() {
             className={cn(
               "!rounded-md px-4 py-1.5 text-sm min-w-26",
               "data-[state=on]:bg-white data-[state=on]:text-primary data-[state=on]:shadow-sm",
-              "data-[state=off]:text-muted-foreground"
+              "data-[state=off]:text-muted-foreground",
             )}
           >
             Trash
           </ToggleGroupItem>
         </ToggleGroup>
-        <Button className="gap-1.5 h-10" size="lg">
-          <Plus strokeWidth={3} className="h-4 w-4" />
-          Add Product
-        </Button>
+        <Link href="/products/add-new">
+          <Button className="gap-1.5 h-10 cursor-pointer" size="lg">
+            <Plus strokeWidth={3} className="h-4 w-4" />
+            Add Product
+          </Button>
+        </Link>
       </div>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3 flex-wrap">
@@ -279,7 +287,10 @@ export default function ProductsTable() {
                   <ChevronDown className="ml-1.5 h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent>{/* Your tags here */}</DropdownMenuContent>
+              <DropdownMenuContent>
+                <DropdownMenuItem>Electronics</DropdownMenuItem>
+                <DropdownMenuItem>Clothing</DropdownMenuItem>
+              </DropdownMenuContent>
             </DropdownMenu>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -410,14 +421,26 @@ export default function ProductsTable() {
                       {product.name || "—"}
                     </div>
                     <div className="flex gap-1 justify-start text-xs">
-                      <button className="text-primary hover:underline">
+                      <button
+                        className="text-primary hover:underline cursor-pointer"
+                        onClick={() => {
+                          setSelectedProduct(product);
+                          setOpen(true);
+                        }}
+                      >
                         View
                       </button>
                       <span className="text-muted-foreground select-none">
                         |
                       </span>
-                      <button className="text-muted-foreground hover:text-primary">
+                      <button className="text-muted-foreground hover:text-primary cursor-pointer">
                         Edit
+                      </button>
+                      <span className="text-muted-foreground select-none">
+                        |
+                      </span>
+                      <button className="text-red-600 hover:underline cursor-pointer">
+                        Trash
                       </button>
                     </div>
                   </TableCell>
@@ -561,6 +584,11 @@ export default function ProductsTable() {
             </PaginationItem>
           </PaginationContent>
         </Pagination>
+        <ProductDetailsSheet
+          open={open}
+          onOpenChange={setOpen}
+          product={selectedProduct}
+        />
       </div>
     </div>
   );
