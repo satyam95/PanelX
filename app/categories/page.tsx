@@ -1,3 +1,5 @@
+"use client";
+import AddCategorySheet from "@/components/add-category-sheet";
 import { CategoryTable } from "@/components/category-table";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -19,6 +21,7 @@ import {
 } from "@/components/ui/pagination";
 
 import { ChevronDown, Plus, Search } from "lucide-react";
+import { useState } from "react";
 
 type Category = {
   id: number;
@@ -69,11 +72,17 @@ const dummyCategories: Category[] = [
 ];
 
 export default function CategoriesPage() {
+  const [open, setOpen] = useState(false);
+
   return (
     <div className="w-full space-y-6">
       <div className="flex items-center justify-between">
         <div className="font-semibold text-xl">Categories</div>
-        <Button className="gap-1.5 h-10" size="lg">
+        <Button
+          className="gap-1.5 h-10 cursor-pointer"
+          size="lg"
+          onClick={() => setOpen(true)}
+        >
           <Plus strokeWidth={3} className="h-4 w-4" />
           Add Category
         </Button>
@@ -188,6 +197,7 @@ export default function CategoriesPage() {
           </Pagination>
         </div>
       </Card>
+      <AddCategorySheet open={open} onOpenChange={setOpen} />
     </div>
   );
 }

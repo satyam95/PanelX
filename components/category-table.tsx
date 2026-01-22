@@ -177,6 +177,10 @@ export function CategoryTable({ limit }: CategoryTableProps) {
                   </div>
                   <div className="flex gap-1 justify-start text-xs">
                     <button className="text-primary hover:underline">
+                      View
+                    </button>
+                    <span className="text-muted-foreground select-none">|</span>
+                    <button className="text-muted-foreground hover:text-primary cursor-pointer">
                       Edit
                     </button>
                     <span className="text-muted-foreground select-none">|</span>

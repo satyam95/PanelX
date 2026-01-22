@@ -31,16 +31,86 @@ type Tag = {
 };
 
 const dummyTags: Tag[] = [
-  { id: 1, name: "New Arrival", slug: "new-arrival", status: "Active", products: 54, createdAt: "Jan 10, 2026" },
-  { id: 2, name: "Best Seller", slug: "best-seller", status: "Active", products: 72, createdAt: "Jan 11, 2026" },
-  { id: 3, name: "Trending", slug: "trending", status: "Active", products: 63, createdAt: "Jan 12, 2026" },
-  { id: 4, name: "Discounted", slug: "discounted", status: "Inactive", products: 41, createdAt: "Jan 08, 2026" },
-  { id: 5, name: "Limited Edition", slug: "limited-edition", status: "Inactive", products: 18, createdAt: "Jan 14, 2026" },
-  { id: 6, name: "Premium", slug: "premium", status: "Active", products: 27, createdAt: "Jan 14, 2026" },
-  { id: 7, name: "Eco Friendly", slug: "eco-friendly", status: "Inactive", products: 19, createdAt: "Jan 05, 2026" },
-  { id: 8, name: "Popular", slug: "popular", status: "Active", products: 88, createdAt: "Jan 09, 2026" },
-  { id: 9, name: "Seasonal", slug: "seasonal", status: "Active", products: 34, createdAt: "Jan 15, 2026" },
-  { id: 10, name: "Editor's Pick", slug: "editors-pick", status: "Inactive", products: 12, createdAt: "Jan 07, 2026" },
+  {
+    id: 1,
+    name: "New Arrival",
+    slug: "new-arrival",
+    status: "Active",
+    products: 54,
+    createdAt: "Jan 10, 2026",
+  },
+  {
+    id: 2,
+    name: "Best Seller",
+    slug: "best-seller",
+    status: "Active",
+    products: 72,
+    createdAt: "Jan 11, 2026",
+  },
+  {
+    id: 3,
+    name: "Trending",
+    slug: "trending",
+    status: "Active",
+    products: 63,
+    createdAt: "Jan 12, 2026",
+  },
+  {
+    id: 4,
+    name: "Discounted",
+    slug: "discounted",
+    status: "Inactive",
+    products: 41,
+    createdAt: "Jan 08, 2026",
+  },
+  {
+    id: 5,
+    name: "Limited Edition",
+    slug: "limited-edition",
+    status: "Inactive",
+    products: 18,
+    createdAt: "Jan 14, 2026",
+  },
+  {
+    id: 6,
+    name: "Premium",
+    slug: "premium",
+    status: "Active",
+    products: 27,
+    createdAt: "Jan 14, 2026",
+  },
+  {
+    id: 7,
+    name: "Eco Friendly",
+    slug: "eco-friendly",
+    status: "Inactive",
+    products: 19,
+    createdAt: "Jan 05, 2026",
+  },
+  {
+    id: 8,
+    name: "Popular",
+    slug: "popular",
+    status: "Active",
+    products: 88,
+    createdAt: "Jan 09, 2026",
+  },
+  {
+    id: 9,
+    name: "Seasonal",
+    slug: "seasonal",
+    status: "Active",
+    products: 34,
+    createdAt: "Jan 15, 2026",
+  },
+  {
+    id: 10,
+    name: "Editor's Pick",
+    slug: "editors-pick",
+    status: "Inactive",
+    products: 12,
+    createdAt: "Jan 07, 2026",
+  },
 ];
 
 export function TagsTable({ limit }: TagsTableProps) {
@@ -94,6 +164,10 @@ export function TagsTable({ limit }: TagsTableProps) {
                   </div>
                   <div className="flex gap-1 justify-start text-xs">
                     <button className="text-primary hover:underline">
+                      View
+                    </button>
+                    <span className="text-muted-foreground select-none">|</span>
+                    <button className="text-muted-foreground hover:text-primary cursor-pointer">
                       Edit
                     </button>
                     <span className="text-muted-foreground select-none">|</span>
