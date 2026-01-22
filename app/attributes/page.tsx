@@ -1,3 +1,6 @@
+"use client";
+import AddAttributeSheet from "@/components/add-attribute-sheet";
+import AddCategorySheet from "@/components/add-category-sheet";
 import { AttributeTable } from "@/components/attribute-table";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -18,13 +21,19 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { ChevronDown, Plus, Search } from "lucide-react";
+import { useState } from "react";
 
 export default function AttributesPage() {
+  const [openAddAttribute, setOpenAddAttribute] = useState(false);
   return (
     <div className="w-full space-y-6">
       <div className="flex items-center justify-between">
         <div className="font-semibold text-xl">Attributes</div>
-        <Button className="gap-1.5 h-10" size="lg">
+        <Button
+          className="gap-1.5 h-10 cursor-pointer"
+          size="lg"
+          onClick={() => setOpenAddAttribute(true)}
+        >
           <Plus strokeWidth={3} className="h-4 w-4" />
           Add Attribute
         </Button>
@@ -123,6 +132,10 @@ export default function AttributesPage() {
           </Pagination>
         </div>
       </Card>
+      <AddAttributeSheet
+        open={openAddAttribute}
+        onOpenChange={setOpenAddAttribute}
+      />
     </div>
   );
 }

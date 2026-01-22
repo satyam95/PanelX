@@ -1,3 +1,4 @@
+"use client";
 import { Pause, Trash2 } from "lucide-react";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
@@ -9,6 +10,8 @@ import {
   TableHeader,
   TableRow,
 } from "./ui/table";
+import { useState } from "react";
+import ConfigureTermsSheet from "./configure-terms-sheet";
 
 type AttributeStatus = "Active" | "Inactive";
 
@@ -62,94 +65,118 @@ const dummyAttributes: Attribute[] = [
 ];
 
 export function AttributeTable() {
+  const [openAddConfigureTerms, setOpenAddConfigureTerms] = useState(false);
   return (
-    <Table className="table-fixed w-full">
-      <colgroup>
-        <col className="w-[6%]" />
-        <col className="w-[18%]" />
-        <col className="w-[12%]" />
-        <col className="w-[10%]" />
-        <col className="w-[24%]" />
-        <col className="w-[10%]" />
-        <col className="w-[10%]" />
-        <col className="w-[10%]" />
-      </colgroup>
+    <>
+      <Table className="table-fixed w-full">
+        <colgroup>
+          <col className="w-[6%]" />
+          <col className="w-[18%]" />
+          <col className="w-[12%]" />
+          <col className="w-[10%]" />
+          <col className="w-[24%]" />
+          <col className="w-[10%]" />
+          <col className="w-[10%]" />
+          <col className="w-[10%]" />
+        </colgroup>
 
-      <TableHeader className="h-14 text-base text-primary">
-        <TableRow className="bg-primary/20 hover:bg-primary/20 !border-b-0">
-          <TableHead className="text-center text-primary rounded-l-md px-4">
-            <Checkbox />
-          </TableHead>
-          <TableHead className="text-center text-primary font-medium">Name</TableHead>
-          <TableHead className="text-center text-primary font-medium">Slug</TableHead>
-          <TableHead className="text-center text-primary font-medium">Order By</TableHead>
-          <TableHead className="text-center text-primary font-medium">Terms</TableHead>
-          <TableHead className="text-center text-primary font-medium">Type</TableHead>
-          <TableHead className="text-center text-primary font-medium">Visibility</TableHead>
-          <TableHead className="text-center text-primary font-medium rounded-r-md">
-            Action
-          </TableHead>
-        </TableRow>
-      </TableHeader>
-
-      <TableBody>
-        {dummyAttributes.map((attr) => (
-          <TableRow key={attr.id} className="text-sm">
-            <TableCell className="text-center px-4 rounded-l-md">
+        <TableHeader className="h-14 text-base text-primary">
+          <TableRow className="bg-primary/20 hover:bg-primary/20 !border-b-0">
+            <TableHead className="text-center text-primary rounded-l-md px-4">
               <Checkbox />
-            </TableCell>
+            </TableHead>
+            <TableHead className="text-center text-primary font-medium">
+              Name
+            </TableHead>
+            <TableHead className="text-center text-primary font-medium">
+              Slug
+            </TableHead>
+            <TableHead className="text-center text-primary font-medium">
+              Order By
+            </TableHead>
+            <TableHead className="text-center text-primary font-medium">
+              Terms
+            </TableHead>
+            <TableHead className="text-center text-primary font-medium">
+              Type
+            </TableHead>
+            <TableHead className="text-center text-primary font-medium">
+              Visibility
+            </TableHead>
+            <TableHead className="text-center text-primary font-medium rounded-r-md">
+              Action
+            </TableHead>
+          </TableRow>
+        </TableHeader>
 
-            <TableCell className="font-medium text-left">
-              <div className="flex flex-col gap-1">
-                <div>{attr.name}</div>
-                <div className="flex gap-1 text-xs">
-                  <button className="text-primary hover:underline">Edit</button>
-                  <span className="text-muted-foreground">|</span>
-                  <button className="text-red-600 hover:underline">
-                    Trash
+        <TableBody>
+          {dummyAttributes.map((attr) => (
+            <TableRow key={attr.id} className="text-sm">
+              <TableCell className="text-center px-4 rounded-l-md">
+                <Checkbox />
+              </TableCell>
+
+              <TableCell className="font-medium text-left">
+                <div className="flex flex-col gap-1">
+                  <div>{attr.name}</div>
+                  <div className="flex gap-1 text-xs">
+                    <button className="text-primary hover:underline">
+                      Edit
+                    </button>
+                    <span className="text-muted-foreground">|</span>
+                    <button className="text-red-600 hover:underline">
+                      Trash
+                    </button>
+                  </div>
+                </div>
+              </TableCell>
+
+              <TableCell className="text-center text-xs text-muted-foreground">
+                {attr.slug}
+              </TableCell>
+
+              <TableCell className="text-center">{attr.orderBy}</TableCell>
+
+              <TableCell className="text-left">
+                <div className="flex flex-col gap-1">
+                  <div className="text-xs text-muted-foreground line-clamp-2">
+                    {attr.terms.join(", ")}
+                  </div>
+                  <button
+                    className="text-xs text-primary hover:underline w-fit"
+                    onClick={() => setOpenAddConfigureTerms(true)}
+                  >
+                    Configure terms
                   </button>
                 </div>
-              </div>
-            </TableCell>
+              </TableCell>
 
-            <TableCell className="text-center text-xs text-muted-foreground">
-              {attr.slug}
-            </TableCell>
+              <TableCell className="text-center">{attr.type}</TableCell>
 
-            <TableCell className="text-center">{attr.orderBy}</TableCell>
+              <TableCell className="text-center">{attr.visibility}</TableCell>
 
-            <TableCell className="text-left">
-              <div className="flex flex-col gap-1">
-                <div className="text-xs text-muted-foreground line-clamp-2">
-                  {attr.terms.join(", ")}
+              <TableCell className="text-center rounded-r-md">
+                <div className="flex items-center justify-center gap-2">
+                  <Button
+                    size="icon"
+                    className="bg-yellow-100 text-yellow-600 hover:bg-yellow-200"
+                    title="Disable"
+                  >
+                    <Pause className="h-4 w-4" />
+                  </Button>
+                  <Button size="icon" variant="destructive" title="Delete">
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
                 </div>
-                <button className="text-xs text-primary hover:underline w-fit">
-                  Configure terms
-                </button>
-              </div>
-            </TableCell>
-
-            <TableCell className="text-center">{attr.type}</TableCell>
-
-            <TableCell className="text-center">{attr.visibility}</TableCell>
-
-            <TableCell className="text-center rounded-r-md">
-              <div className="flex items-center justify-center gap-2">
-                <Button
-                  size="icon"
-                  className="bg-yellow-100 text-yellow-600 hover:bg-yellow-200"
-                  title="Disable"
-                >
-                  <Pause className="h-4 w-4" />
-                </Button>
-                <Button size="icon" variant="destructive" title="Delete">
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              </div>
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      <ConfigureTermsSheet
+        open={openAddConfigureTerms}
+        onOpenChange={setOpenAddConfigureTerms}
+      />
+    </>
   );
 }
