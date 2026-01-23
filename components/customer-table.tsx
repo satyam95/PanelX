@@ -1,3 +1,4 @@
+"use client";
 import { Mail, Pause, Phone, Trash2 } from "lucide-react";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
@@ -9,13 +10,36 @@ import {
   TableHeader,
   TableRow,
 } from "./ui/table";
-import { data } from "./app-sidebar";
+import { useState } from "react";
+import { CustomerDetailsSheet } from "./customer-details-sheet";
 
 type CustomerTableProps = {
   limit?: number;
 };
 
-export const customers = [
+export type Customer = {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  billingAddress: {
+    street: string;
+    city: string;
+    state?: string;
+    country: string;
+    zip?: string;
+  };
+  shippingAddress: {
+    street: string;
+    city: string;
+    state?: string;
+    country: string;
+    zip?: string;
+  };
+  orders: number;
+};
+
+export const customers: Customer[] = [
   {
     id: "#CUST001",
     name: "John Doe",
@@ -229,125 +253,145 @@ export const customers = [
 ];
 
 export function CustomerTable({ limit }: CustomerTableProps) {
+  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(
+    null,
+  );
+  const [open, setOpen] = useState(false);
   return (
-    <Table className="table-fixed w-full">
-      <colgroup>
-        <col className="w-[4%]" />
-        <col className="w-[11%]" />
-        <col className="w-[15%]" />
-        <col className="w-[15%]" />
-        <col className="w-[20%]" />
-        <col className="w-[20%]" />
-        <col className="w-[7%]" />
-        <col className="w-[8%]" />
-      </colgroup>
-      <TableHeader className="h-14 text-base text-primary">
-        <TableRow className="bg-primary/20 hover:bg-primary/20 !border-b-0">
-          <TableHead className="text-center text-primary font-medium rounded-l-md px-4">
-            <Checkbox aria-label="Select all products" />
-          </TableHead>
-          <TableHead className="text-center text-primary font-medium">
-            Customer Id
-          </TableHead>
-          <TableHead className="text-center text-primary font-medium">
-            Name
-          </TableHead>
-          <TableHead className="text-center text-primary font-medium">
-            Contact
-          </TableHead>
-          <TableHead className="text-center text-primary font-medium">
-            Billing Address
-          </TableHead>
-          <TableHead className="text-center text-primary font-medium">
-            Shipping Address
-          </TableHead>
-          <TableHead className="text-center text-primary font-medium">
-            Orders
-          </TableHead>
-          <TableHead className="text-center text-primary font-medium">
-            Action
-          </TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {customers.map((item, index) => (
-          <TableRow className="text-sm" key={index}>
-            <TableCell className="text-center px-4 rounded-l-md">
-              <Checkbox />
-            </TableCell>
-            <TableCell className="text-center">{item.id}</TableCell>
-            <TableCell className="">
-              <div className="flex flex-col font-medium gap-1">
-                <div className="line-clamp-2 h-full text-wrap text-left">
-                  {item.name}
-                </div>
-                <div className="flex gap-1 justify-start text-xs">
-                  <button className="text-primary hover:underline">View</button>
-                  <span className="text-muted-foreground select-none">|</span>
-                  <button className="text-red-600 hover:underline">
-                    Trash
-                  </button>
-                </div>
-              </div>
-            </TableCell>
-            <TableCell className="text-xs text-muted-foreground">
-              <div className="flex flex-col gap-1">
-                <div className="flex items-center gap-1">
-                  <Mail className="h-3 w-3" />
-                  <span>{item.email}</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <Phone className="h-3 w-3" />
-                  <span>{item.phone}</span>
-                </div>
-              </div>
-            </TableCell>
-            <TableCell className="text-xs text-muted-foreground">
-              <div className="leading-tight text-left">
-                <div>{item.billingAddress.street}</div>
-                <div>
-                  {item.billingAddress.city}
-                  {item.billingAddress.state &&
-                    `, ${item.billingAddress.state}`}
-                </div>
-                <div>
-                  {item.billingAddress.country}
-                  {item.billingAddress.zip && ` - ${item.billingAddress.zip}`}
-                </div>
-              </div>
-            </TableCell>
-            <TableCell className="text-xs text-muted-foreground">
-              <div className="leading-tight text-left">
-                <div>{item.shippingAddress.street}</div>
-                <div>
-                  {item.shippingAddress.city}
-                  {item.shippingAddress.state &&
-                    `, ${item.shippingAddress.state}`}
-                </div>
-                <div>
-                  {item.shippingAddress.country}
-                  {item.shippingAddress.zip && ` - ${item.shippingAddress.zip}`}
-                </div>
-              </div>
-            </TableCell>
-            <TableCell className="text-center">{item.orders}</TableCell>
-            <TableCell className="text-center">
-              <div className="flex items-center justify-center gap-2">
-                <Button
-                  size="icon"
-                  className="text-yellow-600 bg-yellow-100 hover:bg-yellow-200"
-                  title="Suspend"
-                >
-                  <Pause className="h-4 w-4" />
-                </Button>
-                <Button size="icon" variant="destructive" title="Terminate">
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              </div>
-            </TableCell>
+    <>
+      <Table className="table-fixed w-full">
+        <colgroup>
+          <col className="w-[4%]" />
+          <col className="w-[11%]" />
+          <col className="w-[15%]" />
+          <col className="w-[15%]" />
+          <col className="w-[20%]" />
+          <col className="w-[20%]" />
+          <col className="w-[7%]" />
+          <col className="w-[8%]" />
+        </colgroup>
+        <TableHeader className="h-14 text-base text-primary">
+          <TableRow className="bg-primary/20 hover:bg-primary/20 !border-b-0">
+            <TableHead className="text-center text-primary font-medium rounded-l-md px-4">
+              <Checkbox aria-label="Select all products" />
+            </TableHead>
+            <TableHead className="text-center text-primary font-medium">
+              Customer Id
+            </TableHead>
+            <TableHead className="text-center text-primary font-medium">
+              Name
+            </TableHead>
+            <TableHead className="text-center text-primary font-medium">
+              Contact
+            </TableHead>
+            <TableHead className="text-center text-primary font-medium">
+              Billing Address
+            </TableHead>
+            <TableHead className="text-center text-primary font-medium">
+              Shipping Address
+            </TableHead>
+            <TableHead className="text-center text-primary font-medium">
+              Orders
+            </TableHead>
+            <TableHead className="text-center text-primary font-medium">
+              Action
+            </TableHead>
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+        </TableHeader>
+        <TableBody>
+          {customers.map((item, index) => (
+            <TableRow className="text-sm" key={index}>
+              <TableCell className="text-center px-4 rounded-l-md">
+                <Checkbox />
+              </TableCell>
+              <TableCell className="text-center">{item.id}</TableCell>
+              <TableCell className="">
+                <div className="flex flex-col font-medium gap-1">
+                  <div className="line-clamp-2 h-full text-wrap text-left">
+                    {item.name}
+                  </div>
+                  <div className="flex gap-1 justify-start text-xs">
+                    <button
+                      className="text-primary hover:underline"
+                      onClick={() => {
+                        setSelectedCustomer(item);
+                        setOpen(true);
+                      }}
+                    >
+                      View
+                    </button>
+                    <span className="text-muted-foreground select-none">|</span>
+                    <button className="text-red-600 hover:underline">
+                      Trash
+                    </button>
+                  </div>
+                </div>
+              </TableCell>
+              <TableCell className="text-xs text-muted-foreground">
+                <div className="flex flex-col gap-1">
+                  <div className="flex items-center gap-1">
+                    <Mail className="h-3 w-3" />
+                    <span>{item.email}</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Phone className="h-3 w-3" />
+                    <span>{item.phone}</span>
+                  </div>
+                </div>
+              </TableCell>
+              <TableCell className="text-xs text-muted-foreground">
+                <div className="leading-tight text-left">
+                  <div>{item.billingAddress.street}</div>
+                  <div>
+                    {item.billingAddress.city}
+                    {item.billingAddress.state &&
+                      `, ${item.billingAddress.state}`}
+                  </div>
+                  <div>
+                    {item.billingAddress.country}
+                    {item.billingAddress.zip && ` - ${item.billingAddress.zip}`}
+                  </div>
+                </div>
+              </TableCell>
+              <TableCell className="text-xs text-muted-foreground">
+                <div className="leading-tight text-left">
+                  <div>{item.shippingAddress.street}</div>
+                  <div>
+                    {item.shippingAddress.city}
+                    {item.shippingAddress.state &&
+                      `, ${item.shippingAddress.state}`}
+                  </div>
+                  <div>
+                    {item.shippingAddress.country}
+                    {item.shippingAddress.zip &&
+                      ` - ${item.shippingAddress.zip}`}
+                  </div>
+                </div>
+              </TableCell>
+              <TableCell className="text-center">{item.orders}</TableCell>
+              <TableCell className="text-center">
+                <div className="flex items-center justify-center gap-2">
+                  <Button
+                    size="icon"
+                    className="text-yellow-600 bg-yellow-100 hover:bg-yellow-200"
+                    title="Suspend"
+                  >
+                    <Pause className="h-4 w-4" />
+                  </Button>
+                  <Button size="icon" variant="destructive" title="Terminate">
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      <CustomerDetailsSheet
+        open={open}
+        onOpenChange={setOpen}
+        customer={selectedCustomer}
+      />
+    </>
   );
 }
