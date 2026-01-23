@@ -1,3 +1,5 @@
+"use client";
+import { AddBannerSheet } from "@/components/add-banner-sheet";
 import { BannersTable } from "@/components/banners-table";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -20,8 +22,10 @@ import {
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { cn } from "@/lib/utils";
 import { ChevronDown, Plus, Search } from "lucide-react";
+import { useState } from "react";
 
 export default function BannersPage() {
+  const [open, setOpen] = useState(false);
   return (
     <div className="w-full space-y-6">
       <div className="font-semibold text-xl">Banners</div>
@@ -74,7 +78,11 @@ export default function BannersPage() {
                 Trash
               </ToggleGroupItem>
             </ToggleGroup>
-            <Button className="gap-1.5 h-10" size="lg">
+            <Button
+              className="gap-1.5 h-10 cursor-pointer"
+              size="lg"
+              onClick={() => setOpen(true)}
+            >
               <Plus strokeWidth={3} className="h-4 w-4" />
               Add Banner
             </Button>
@@ -175,6 +183,7 @@ export default function BannersPage() {
           </div>
         </div>
       </Card>
+      <AddBannerSheet open={open} onOpenChange={setOpen} />
     </div>
   );
 }
