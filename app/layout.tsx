@@ -1,10 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Noto_Sans } from "next/font/google";
 import "./globals.css";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/app-sidebar";
 import React from "react";
-import { AppHeader } from "@/components/app-header";
 
 const notoSans = Noto_Sans({ variable: "--font-sans" });
 
@@ -34,13 +31,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         suppressHydrationWarning
       >
-        <SidebarProvider>
-          <AppSidebar />
-          <SidebarInset>
-            <AppHeader />
-            <div className="flex flex-1 flex-col gap-4 p-4">{children}</div>
-          </SidebarInset>
-        </SidebarProvider>
+        {children}
       </body>
     </html>
   );
