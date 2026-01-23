@@ -20,6 +20,7 @@ import {
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { cn } from "@/lib/utils";
 import { ChevronDown, Plus, Search } from "lucide-react";
+import Link from "next/link";
 
 export default function SupportPage() {
   return (
@@ -84,10 +85,12 @@ export default function SupportPage() {
                 Closed
               </ToggleGroupItem>
             </ToggleGroup>
-            <Button className="gap-1.5 h-10" size="lg">
-              <Plus strokeWidth={3} className="h-4 w-4" />
-              Add Ticket
-            </Button>
+            <Link href="/support/add-new">
+              <Button className="gap-1.5 h-10" size="lg">
+                <Plus strokeWidth={3} className="h-4 w-4" />
+                Add Ticket
+              </Button>
+            </Link>
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3 flex-wrap">
