@@ -20,6 +20,7 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { UsersTable } from "@/components/users-table";
 import { cn } from "@/lib/utils";
 import { ChevronDown, Plus, Search } from "lucide-react";
+import Link from "next/link";
 
 export default function UsersPage() {
   return (
@@ -74,10 +75,12 @@ export default function UsersPage() {
                 Support
               </ToggleGroupItem>
             </ToggleGroup>
-            <Button className="gap-1.5 h-10" size="lg">
-              <Plus strokeWidth={3} className="h-4 w-4" />
-              Add User
-            </Button>
+            <Link href="/users/add-new">
+              <Button className="gap-1.5 h-10" size="lg">
+                <Plus strokeWidth={3} className="h-4 w-4" />
+                Add User
+              </Button>
+            </Link>
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3 flex-wrap">

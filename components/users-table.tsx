@@ -1,3 +1,4 @@
+"use client";
 import { Pause, Trash2 } from "lucide-react";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
@@ -9,6 +10,8 @@ import {
   TableHeader,
   TableRow,
 } from "./ui/table";
+import { useState } from "react";
+import { UserDetailsSheet } from "./user-details-sheet";
 
 type UsersTableProps = {
   limit?: number;
@@ -126,109 +129,126 @@ const statusStyles: Record<UserStatus, string> = {
 };
 
 export function UsersTable({ limit }: UsersTableProps) {
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [sheetOpen, setSheetOpen] = useState(false);
   return (
-    <Table className="table-fixed w-full">
-      <colgroup>
-        <col className="w-[6%]" />
-        <col className="w-[16%]" />
-        <col className="w-[18%]" />
-        <col className="w-[14%]" />
-        <col className="w-[12%]" />
-        <col className="w-[12%]" />
-        <col className="w-[12%]" />
-        <col className="w-[10%]" />
-        <col className="w-[10%]" />
-      </colgroup>
-      <TableHeader className="h-14 text-base text-primary">
-        <TableRow className="bg-primary/20 hover:bg-primary/20 !border-b-0">
-          <TableHead className="text-center text-primary font-medium rounded-l-md px-4">
-            <Checkbox aria-label="Select all users" />
-          </TableHead>
-          <TableHead className="text-center text-primary font-medium">
-            Name
-          </TableHead>
-          <TableHead className="text-center text-primary font-medium">
-            Email
-          </TableHead>
-          <TableHead className="text-center text-primary font-medium">
-            Phone
-          </TableHead>
-          <TableHead className="text-center text-primary font-medium">
-            Role
-          </TableHead>
-          <TableHead className="text-center text-primary font-medium">
-            Status
-          </TableHead>
-          <TableHead className="text-center text-primary font-medium">
-            Last Login
-          </TableHead>
-          <TableHead className="text-center text-primary font-medium">
-            Created
-          </TableHead>
-          <TableHead className="text-center text-primary font-medium rounded-r-md">
-            Action
-          </TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {users.map((user, index) => (
-          <TableRow className="text-sm" key={index}>
-            <TableCell className="text-center px-4 rounded-l-md">
-              <Checkbox />
-            </TableCell>
-            <TableCell className="text-left font-medium">
-              <div className="flex flex-col gap-1">
-                <span>{user.name}</span>
-                <div className="flex gap-1 text-xs">
-                  <button className="text-primary hover:underline">View</button>
-                  <span className="text-muted-foreground select-none">|</span>
-                  <button className="text-red-600 hover:underline">
-                    Remove
-                  </button>
-                </div>
-              </div>
-            </TableCell>
-            <TableCell className="text-sm text-muted-foreground text-center">
-              {user.email}
-            </TableCell>
-            <TableCell className="text-sm text-muted-foreground text-center">
-              {user.phone}
-            </TableCell>
-            <TableCell className="text-center">
-              <span className="rounded-md bg-primary/10 px-2 py-1 text-xs font-medium text-primary">
-                {user.role}
-              </span>
-            </TableCell>
-            <TableCell className="text-center">
-              <span
-                className={`rounded-full px-3 py-1 text-xs font-medium ${statusStyles[user.status]}`}
-              >
-                {user.status}
-              </span>
-            </TableCell>
-            <TableCell className="text-center text-xs text-muted-foreground">
-              {user.lastLogin}
-            </TableCell>
-            <TableCell className="text-center text-xs text-muted-foreground">
-              {user.createdAt}
-            </TableCell>
-            <TableCell className="text-center rounded-r-md">
-              <div className="flex items-center justify-center gap-2">
-                <Button
-                  size="icon"
-                  className="bg-yellow-100 text-yellow-600 hover:bg-yellow-200"
-                  title="Suspend"
-                >
-                  <Pause className="h-4 w-4" />
-                </Button>
-                <Button size="icon" variant="destructive" title="Delete">
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              </div>
-            </TableCell>
+    <>
+      <Table className="table-fixed w-full">
+        <colgroup>
+          <col className="w-[6%]" />
+          <col className="w-[16%]" />
+          <col className="w-[18%]" />
+          <col className="w-[14%]" />
+          <col className="w-[12%]" />
+          <col className="w-[12%]" />
+          <col className="w-[12%]" />
+          <col className="w-[10%]" />
+          <col className="w-[10%]" />
+        </colgroup>
+        <TableHeader className="h-14 text-base text-primary">
+          <TableRow className="bg-primary/20 hover:bg-primary/20 !border-b-0">
+            <TableHead className="text-center text-primary font-medium rounded-l-md px-4">
+              <Checkbox aria-label="Select all users" />
+            </TableHead>
+            <TableHead className="text-center text-primary font-medium">
+              Name
+            </TableHead>
+            <TableHead className="text-center text-primary font-medium">
+              Email
+            </TableHead>
+            <TableHead className="text-center text-primary font-medium">
+              Phone
+            </TableHead>
+            <TableHead className="text-center text-primary font-medium">
+              Role
+            </TableHead>
+            <TableHead className="text-center text-primary font-medium">
+              Status
+            </TableHead>
+            <TableHead className="text-center text-primary font-medium">
+              Last Login
+            </TableHead>
+            <TableHead className="text-center text-primary font-medium">
+              Created
+            </TableHead>
+            <TableHead className="text-center text-primary font-medium rounded-r-md">
+              Action
+            </TableHead>
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+        </TableHeader>
+        <TableBody>
+          {users.map((user, index) => (
+            <TableRow className="text-sm" key={index}>
+              <TableCell className="text-center px-4 rounded-l-md">
+                <Checkbox />
+              </TableCell>
+              <TableCell className="text-left font-medium">
+                <div className="flex flex-col gap-1">
+                  <span>{user.name}</span>
+                  <div className="flex gap-1 text-xs">
+                    <button
+                      className="text-primary hover:underline"
+                      onClick={() => {
+                        setSelectedUser(user);
+                        setSheetOpen(true);
+                      }}
+                    >
+                      View
+                    </button>
+                    <span className="text-muted-foreground select-none">|</span>
+                    <button className="text-red-600 hover:underline">
+                      Remove
+                    </button>
+                  </div>
+                </div>
+              </TableCell>
+              <TableCell className="text-sm text-muted-foreground text-center">
+                {user.email}
+              </TableCell>
+              <TableCell className="text-sm text-muted-foreground text-center">
+                {user.phone}
+              </TableCell>
+              <TableCell className="text-center">
+                <span className="rounded-md bg-primary/10 px-2 py-1 text-xs font-medium text-primary">
+                  {user.role}
+                </span>
+              </TableCell>
+              <TableCell className="text-center">
+                <span
+                  className={`rounded-full px-3 py-1 text-xs font-medium ${statusStyles[user.status]}`}
+                >
+                  {user.status}
+                </span>
+              </TableCell>
+              <TableCell className="text-center text-xs text-muted-foreground">
+                {user.lastLogin}
+              </TableCell>
+              <TableCell className="text-center text-xs text-muted-foreground">
+                {user.createdAt}
+              </TableCell>
+              <TableCell className="text-center rounded-r-md">
+                <div className="flex items-center justify-center gap-2">
+                  <Button
+                    size="icon"
+                    className="bg-yellow-100 text-yellow-600 hover:bg-yellow-200"
+                    title="Suspend"
+                  >
+                    <Pause className="h-4 w-4" />
+                  </Button>
+                  <Button size="icon" variant="destructive" title="Delete">
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      <UserDetailsSheet
+        user={selectedUser}
+        open={sheetOpen}
+        onOpenChange={setSheetOpen}
+      />
+    </>
   );
 }
