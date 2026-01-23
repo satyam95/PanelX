@@ -1,3 +1,4 @@
+"use client";
 import { cn } from "@/lib/utils";
 import {
   Table,
@@ -9,6 +10,8 @@ import {
 } from "./ui/table";
 import { Truck } from "lucide-react";
 import { Checkbox } from "./ui/checkbox";
+import { useState } from "react";
+import OrderDetailsSheet from "./order-details-sheet";
 
 type OrderStatus = "Pending" | "Delivered" | "Shipped" | "Cancelled";
 
@@ -16,7 +19,25 @@ type OrderTableProps = {
   limit?: number;
 };
 
-const allOrders = [
+type Order = {
+  row: number;
+  selected: boolean;
+  orderId: string;
+  product_name: string;
+  date: string;
+  price: number;
+  paymentIndicator: string;
+  status: OrderStatus;
+  shippingAddress: {
+    street: string;
+    city: string;
+    state: string;
+    country: string;
+    zip: string;
+  };
+};
+
+const allOrders: Order[] = [
   {
     row: 1,
     selected: false,
@@ -197,116 +218,140 @@ const statusColorMap: Record<OrderStatus, string> = {
 };
 
 export function OrderTable({ limit }: OrderTableProps) {
+  const [openOrderSheet, setOpenOrderSheet] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const displayedOrders =
     limit && limit > 0 ? allOrders.slice(0, limit) : allOrders;
   return (
-    <Table className="table-fixed w-full">
-      <colgroup>
-        <col className="w-[4%]" />
-        <col className="w-[11.24%]" />
-        <col className="w-[24.89%]" />
-        <col className="w-[10.92%]" />
-        <col className="w-[7.92%]" />
-        <col className="w-[18.5%]" />
-        <col className="w-[9.92%]" />
-        <col className="w-[10.92%]" />
-      </colgroup>
-      <TableHeader className="h-14 text-base text-primary">
-        <TableRow className="bg-primary/20 hover:bg-primary/20 !border-b-0">
-          <TableHead className="text-center text-primary font-medium rounded-l-md px-4">
-            <Checkbox aria-label="Select all products" />
-          </TableHead>
-          <TableHead className="text-center text-primary font-medium">
-            Order Id
-          </TableHead>
-          <TableHead className="text-center text-primary font-medium">
-            Product
-          </TableHead>
-          <TableHead className="text-center text-primary font-medium">
-            Date
-          </TableHead>
-          <TableHead className="text-center text-primary font-medium">
-            Price
-          </TableHead>
-          <TableHead className="text-center text-primary font-medium">
-            Shipping Address
-          </TableHead>
-          <TableHead className="text-center text-primary font-medium">
-            Payment
-          </TableHead>
-          <TableHead className="text-center text-primary font-medium rounded-r-md">
-            Status
-          </TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {displayedOrders.map((item, index) => (
-          <TableRow className="text-sm" key={index}>
-            <TableCell className="text-center px-4 rounded-l-md">
-              <Checkbox />
-            </TableCell>
-            <TableCell className="text-center">{item.orderId}</TableCell>
-            <TableCell className="font-medium">
-              <div className="flex items-center gap-3">
-                <div className="min-w-10 min-h-10 border rounded-sm bg-primary/10" />
-                <div>
-                  <div className="line-clamp-2 h-full text-wrap text-left">
-                    {item.product_name}
-                  </div>
-                  <div className="flex gap-1 justify-start text-xs">
-                    <button className="text-primary hover:underline">
-                      View
-                    </button>
-                    <span className="text-muted-foreground select-none">|</span>
-                    <button className="text-red-600 hover:underline">
-                      Trash
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </TableCell>
-            <TableCell className="text-center">{item.date}</TableCell>
-            <TableCell className="text-center">${item.price}</TableCell>
-            <TableCell className="text-xs text-muted-foreground">
-              <div className="leading-tight text-left">
-                <div>{item.shippingAddress.street}</div>
-                <div>
-                  {item.shippingAddress.city}
-                  {item.shippingAddress.state &&
-                    `, ${item.shippingAddress.state}`}
-                </div>
-                <div>
-                  {item.shippingAddress.country}
-                  {item.shippingAddress.zip && ` - ${item.shippingAddress.zip}`}
-                </div>
-              </div>
-            </TableCell>
-            <TableCell className="text-center">
-              <div className="flex items-center gap-2 justify-center">
-                <div
-                  className={`w-2 h-2 rounded-full ${
-                    item.paymentIndicator === "Paid"
-                      ? "bg-[#21C45D]"
-                      : "bg-[#EF4343]"
-                  }`}
-                />
-                {item.paymentIndicator}
-              </div>
-            </TableCell>
-            <TableCell className="text-center rounded-r-md">
-              <div
-                className={cn(
-                  "flex items-center gap-2 justify-center",
-                  statusColorMap[item.status as OrderStatus]
-                )}
-              >
-                <Truck size={24} />
-                {item.status}
-              </div>
-            </TableCell>
+    <>
+      <Table className="table-fixed w-full">
+        <colgroup>
+          <col className="w-[4%]" />
+          <col className="w-[11.24%]" />
+          <col className="w-[24.89%]" />
+          <col className="w-[10.92%]" />
+          <col className="w-[7.92%]" />
+          <col className="w-[18.5%]" />
+          <col className="w-[9.92%]" />
+          <col className="w-[10.92%]" />
+        </colgroup>
+        <TableHeader className="h-14 text-base text-primary">
+          <TableRow className="bg-primary/20 hover:bg-primary/20 !border-b-0">
+            <TableHead className="text-center text-primary font-medium rounded-l-md px-4">
+              <Checkbox aria-label="Select all products" />
+            </TableHead>
+            <TableHead className="text-center text-primary font-medium">
+              Order Id
+            </TableHead>
+            <TableHead className="text-center text-primary font-medium">
+              Product
+            </TableHead>
+            <TableHead className="text-center text-primary font-medium">
+              Date
+            </TableHead>
+            <TableHead className="text-center text-primary font-medium">
+              Price
+            </TableHead>
+            <TableHead className="text-center text-primary font-medium">
+              Shipping Address
+            </TableHead>
+            <TableHead className="text-center text-primary font-medium">
+              Payment
+            </TableHead>
+            <TableHead className="text-center text-primary font-medium rounded-r-md">
+              Status
+            </TableHead>
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+        </TableHeader>
+        <TableBody>
+          {displayedOrders.map((item, index) => (
+            <TableRow className="text-sm" key={index}>
+              <TableCell className="text-center px-4 rounded-l-md">
+                <Checkbox />
+              </TableCell>
+              <TableCell className="text-center">{item.orderId}</TableCell>
+              <TableCell className="font-medium">
+                <div className="flex items-center gap-3">
+                  <div className="min-w-10 min-h-10 border rounded-sm bg-primary/10" />
+                  <div>
+                    <div className="line-clamp-2 h-full text-wrap text-left">
+                      {item.product_name}
+                    </div>
+                    <div className="flex gap-1 justify-start text-xs">
+                      <button
+                        className="text-primary hover:underline cursor-pointer"
+                        onClick={() => {
+                          setSelectedOrder(item);
+                          setOpenOrderSheet(true);
+                        }}
+                      >
+                        View
+                      </button>
+                      <span className="text-muted-foreground select-none">
+                        |
+                      </span>
+                      <button className="text-muted-foreground hover:text-primary cursor-pointer">
+                        Edit
+                      </button>
+                      <span className="text-muted-foreground select-none">
+                        |
+                      </span>
+                      <button className="text-red-600 hover:underline">
+                        Trash
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </TableCell>
+              <TableCell className="text-center">{item.date}</TableCell>
+              <TableCell className="text-center">${item.price}</TableCell>
+              <TableCell className="text-xs text-muted-foreground">
+                <div className="leading-tight text-left">
+                  <div>{item.shippingAddress.street}</div>
+                  <div>
+                    {item.shippingAddress.city}
+                    {item.shippingAddress.state &&
+                      `, ${item.shippingAddress.state}`}
+                  </div>
+                  <div>
+                    {item.shippingAddress.country}
+                    {item.shippingAddress.zip &&
+                      ` - ${item.shippingAddress.zip}`}
+                  </div>
+                </div>
+              </TableCell>
+              <TableCell className="text-center">
+                <div className="flex items-center gap-2 justify-center">
+                  <div
+                    className={`w-2 h-2 rounded-full ${
+                      item.paymentIndicator === "Paid"
+                        ? "bg-[#21C45D]"
+                        : "bg-[#EF4343]"
+                    }`}
+                  />
+                  {item.paymentIndicator}
+                </div>
+              </TableCell>
+              <TableCell className="text-center rounded-r-md">
+                <div
+                  className={cn(
+                    "flex items-center gap-2 justify-center",
+                    statusColorMap[item.status as OrderStatus],
+                  )}
+                >
+                  <Truck size={24} />
+                  {item.status}
+                </div>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      <OrderDetailsSheet
+        open={openOrderSheet}
+        onOpenChange={setOpenOrderSheet}
+        order={selectedOrder}
+      />
+    </>
   );
 }

@@ -97,10 +97,10 @@ export default function OrdersPage() {
                 Canceled
               </ToggleGroupItem>
             </ToggleGroup>
-            <Button className="gap-1.5 h-10" size="lg">
+            {/* <Button className="gap-1.5 h-10" size="lg">
               <Plus strokeWidth={3} className="h-4 w-4" />
               Add Order
-            </Button>
+            </Button> */}
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3 flex-wrap">

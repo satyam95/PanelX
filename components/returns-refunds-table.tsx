@@ -1,4 +1,5 @@
-import { Pause, Trash2, RotateCcw } from "lucide-react";
+"use client";
+import { Pause, Trash2 } from "lucide-react";
 import { Checkbox } from "./ui/checkbox";
 import {
   Table,
@@ -9,6 +10,8 @@ import {
   TableRow,
 } from "./ui/table";
 import { Button } from "./ui/button";
+import { useState } from "react";
+import { ReturnRefundSheet } from "./returns-refunds-sheet";
 
 type ReturnStatus =
   | "Requested"
@@ -151,106 +154,129 @@ const dummyReturns: ReturnRefund[] = [
 ];
 
 export function ReturnsRefundsTable() {
+  const [openSheet, setOpenSheet] = useState(false);
+  const [selectedReturn, setSelectedReturn] = useState<ReturnRefund | null>(
+    null,
+  );
   return (
-    <Table className="table-fixed w-full">
-      <colgroup>
-        <col className="w-[5%]" />
-        <col className="w-[10%]" />
-        <col className="w-[12%]" />
-        <col className="w-[16%]" />
-        <col className="w-[18%]" />
-        <col className="w-[10%]" />
-        <col className="w-[12%]" />
-        <col className="w-[10%]" />
-        <col className="w-[10%]" />
-      </colgroup>
-
-      <TableHeader className="h-14 text-base text-primary">
-        <TableRow className="bg-primary/20 hover:bg-primary/20 !border-b-0">
-          <TableHead className="text-center text-primary font-medium rounded-l-md px-4">
-            <Checkbox aria-label="Select all returns" />
-          </TableHead>
-          <TableHead className="text-center text-primary font-medium">
-            Return ID
-          </TableHead>
-          <TableHead className="text-center text-primary font-medium">
-            Order
-          </TableHead>
-          <TableHead className="text-center text-primary font-medium">
-            Customer
-          </TableHead>
-          <TableHead className="text-center text-primary font-medium">
-            Reason
-          </TableHead>
-          <TableHead className="text-center text-primary font-medium">
-            Amount
-          </TableHead>
-          <TableHead className="text-center text-primary font-medium">
-            Status
-          </TableHead>
-          <TableHead className="text-center text-primary font-medium">
-            Requested
-          </TableHead>
-          <TableHead className="text-center text-primary font-medium rounded-r-md">
-            Action
-          </TableHead>
-        </TableRow>
-      </TableHeader>
-
-      <TableBody>
-        {dummyReturns.map((item) => (
-          <TableRow key={item.id} className="text-sm">
-            <TableCell className="text-center px-4 rounded-l-md">
-              <Checkbox />
-            </TableCell>
-
-            <TableCell className="text-center font-medium">{item.id}</TableCell>
-
-            <TableCell className="text-center text-muted-foreground">
-              {item.orderId}
-            </TableCell>
-
-            <TableCell className="text-center text-muted-foreground">
-              {item.customer}
-            </TableCell>
-
-            <TableCell className="text-left text-sm text-muted-foreground">
-              {item.reason}
-            </TableCell>
-
-            <TableCell className="text-center font-medium">
-              {item.refundAmount}
-            </TableCell>
-
-            <TableCell className="text-center">
-              <span
-                className={`rounded-full px-3 py-1 text-xs font-medium ${statusStyles[item.status]}`}
-              >
-                {item.status}
-              </span>
-            </TableCell>
-
-            <TableCell className="text-center text-xs text-muted-foreground">
-              {item.requestedAt}
-            </TableCell>
-
-            <TableCell className="text-center rounded-r-md">
-              <div className="flex items-center justify-center gap-2">
-                <Button
-                  size="icon"
-                  className="bg-yellow-100 text-yellow-600 hover:bg-yellow-200"
-                  title="Hold"
-                >
-                  <Pause className="h-4 w-4" />
-                </Button>
-                <Button size="icon" variant="destructive" title="Reject">
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              </div>
-            </TableCell>
+    <>
+      <Table className="table-fixed w-full">
+        <colgroup>
+          <col className="w-[5%]" />
+          <col className="w-[10%]" />
+          <col className="w-[12%]" />
+          <col className="w-[16%]" />
+          <col className="w-[18%]" />
+          <col className="w-[10%]" />
+          <col className="w-[12%]" />
+          <col className="w-[10%]" />
+          <col className="w-[10%]" />
+        </colgroup>
+        <TableHeader className="h-14 text-base text-primary">
+          <TableRow className="bg-primary/20 hover:bg-primary/20 !border-b-0">
+            <TableHead className="text-center text-primary font-medium rounded-l-md px-4">
+              <Checkbox aria-label="Select all returns" />
+            </TableHead>
+            <TableHead className="text-center text-primary font-medium">
+              Return ID
+            </TableHead>
+            <TableHead className="text-center text-primary font-medium">
+              Order
+            </TableHead>
+            <TableHead className="text-center text-primary font-medium">
+              Customer
+            </TableHead>
+            <TableHead className="text-center text-primary font-medium">
+              Reason
+            </TableHead>
+            <TableHead className="text-center text-primary font-medium">
+              Amount
+            </TableHead>
+            <TableHead className="text-center text-primary font-medium">
+              Status
+            </TableHead>
+            <TableHead className="text-center text-primary font-medium">
+              Requested
+            </TableHead>
+            <TableHead className="text-center text-primary font-medium rounded-r-md">
+              Action
+            </TableHead>
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+        </TableHeader>
+
+        <TableBody>
+          {dummyReturns.map((item) => (
+            <TableRow key={item.id} className="text-sm">
+              <TableCell className="text-center px-4 rounded-l-md">
+                <Checkbox />
+              </TableCell>
+              <TableCell className="text-center font-medium">
+                {item.id}
+              </TableCell>
+              <TableCell className="text-center text-muted-foreground">
+                <div className="flex flex-col font-medium gap-1">
+                  <div className="line-clamp-2 h-full text-wrap text-left">
+                    {item.orderId}
+                  </div>
+                  <div className="flex gap-1 justify-start text-xs">
+                    <button
+                      className="text-primary hover:underline"
+                      onClick={() => {
+                        setSelectedReturn(item);
+                        setOpenSheet(true);
+                      }}
+                    >
+                      View
+                    </button>
+                    <span className="text-muted-foreground select-none">|</span>
+                    <button className="text-red-600 hover:underline">
+                      Trash
+                    </button>
+                  </div>
+                </div>
+              </TableCell>
+              <TableCell className="text-center text-muted-foreground">
+                {item.customer}
+              </TableCell>
+              <TableCell className="text-left text-sm text-muted-foreground">
+                {item.reason}
+              </TableCell>
+              <TableCell className="text-center font-medium">
+                {item.refundAmount}
+              </TableCell>
+              <TableCell className="text-center">
+                <span
+                  className={`rounded-full px-3 py-1 text-xs font-medium ${statusStyles[item.status]}`}
+                >
+                  {item.status}
+                </span>
+              </TableCell>
+              <TableCell className="text-center text-xs text-muted-foreground">
+                {item.requestedAt}
+              </TableCell>
+              <TableCell className="text-center rounded-r-md">
+                <div className="flex items-center justify-center gap-2">
+                  <Button
+                    size="icon"
+                    className="bg-yellow-100 text-yellow-600 hover:bg-yellow-200"
+                    title="Hold"
+                  >
+                    <Pause className="h-4 w-4" />
+                  </Button>
+                  <Button size="icon" variant="destructive" title="Reject">
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      <ReturnRefundSheet
+        open={openSheet}
+        onOpenChange={setOpenSheet}
+        data={selectedReturn}
+      />
+    </>
   );
 }
