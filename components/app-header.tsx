@@ -32,7 +32,7 @@ export function AppHeader() {
   const breadcrumbs = getBreadcrumbs(pathname, data.navMain);
 
   return (
-    <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+    <header className="sticky top-0 z-50 bg-white flex h-16 shrink-0 items-center gap-2 border-b px-4">
       <SidebarTrigger className="-ml-1" />
       <Separator orientation="vertical" className="mr-2" />
       <Breadcrumb>
@@ -44,11 +44,16 @@ export function AppHeader() {
                 <BreadcrumbItem>
                   {isLast ? (
                     <BreadcrumbPage>{crumb.title}</BreadcrumbPage>
+                  ) : crumb.href ? (
+                    <Link href={crumb.href} className="text-muted-foreground hover:text-foreground">
+                      {crumb.title}
+                    </Link>
                   ) : (
-                    <span className="text-muted-foreground">{crumb.title}</span>
+                    <span className="text-muted-foreground">
+                      {crumb.title}
+                    </span>
                   )}
                 </BreadcrumbItem>
-
                 {!isLast && <BreadcrumbSeparator />}
               </React.Fragment>
             );

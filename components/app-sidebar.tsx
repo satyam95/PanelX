@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Minus, Plus, Store } from "lucide-react";
+import { CreditCard, FileText, Landmark, LayoutDashboard, LucideIcon, Megaphone, Minus, Package, Plus, ShieldCheck, ShoppingCart, Store, Truck, Users } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -34,7 +34,7 @@ interface NavSubItem {
 
 interface NavMainItem {
   title: string;
-  url?: string;
+  icon?: LucideIcon;
   items?: NavSubItem[];
 }
 
@@ -56,42 +56,99 @@ export const data: SidebarData = {
     avatar: "/avatars/shadcn.jpg",
   },
   navMain: [
-    { title: "Dashboard", url: "/" },
     {
-      title: "Inventory Management",
+      title: "Dashboard",
+      icon: LayoutDashboard,
+      items: [{ title: "Overview", url: "/" }],
+    },
+
+    {
+      title: "Orders",
+      icon: ShoppingCart,
       items: [
-        { title: "Products", url: "/products" },
-        { title: "Categories", url: "/categories" },
-        { title: "Tags", url: "/tags" },
-        { title: "Attributes", url: "/attributes" },
+        { title: "All Orders", url: "/orders" },
+        { title: "Returns & Refunds", url: "/orders/returns" },
       ],
     },
+
     {
-      title: "Order Management",
+      title: "Products",
+      icon: Package,
       items: [
-        { title: "Orders", url: "/orders" },
-        { title: "Returns & Refunds", url: "/returns" },
+        { title: "All Products", url: "/products" },
+        { title: "Categories", url: "/products/categories" },
+        { title: "Tags", url: "/products/tags" },
+        { title: "Attributes", url: "/products/attributes" },
+        { title: "Reviews", url: "/products/reviews" },
       ],
     },
+
     {
-      title: "Customer Management",
+      title: "Customers",
+      icon: Users,
       items: [
-        { title: "Customers", url: "/customers" },
-        { title: "Customer Support Tickets", url: "/support" },
+        { title: "All Customers", url: "/customers" },
+        { title: "Support Tickets", url: "/customers/support" },
       ],
     },
+
     {
-      title: "Admin & Roles",
-      items: [{ title: "Users & Roles", url: "/users" }],
-    },
-    {
-      title: "App Content",
+      title: "Marketing",
+      icon: Megaphone,
       items: [
-        { title: "App Banners", url: "/banners" },
-        { title: "Legal & Info Pages", url: "/static-pages" },
+        { title: "Coupons", url: "/marketing/coupons" },
+        { title: "Push Notifications", url: "/marketing/push" },
       ],
     },
-  ],
+
+    {
+      title: "Content",
+      icon: FileText,
+      items: [
+        { title: "Posts", url: "/content/posts" },
+        { title: "Post Categories", url: "/content/posts/categories" },
+        { title: "Post Tags", url: "/content/posts/tags" },
+        { title: "App Banners", url: "/content/banners" },
+        { title: "Pages", url: "/content/pages" },
+        { title: "Menus", url: "/content/menus" },
+      ],
+    },
+
+    {
+      title: "Payments",
+      icon: CreditCard,
+      items: [
+        { title: "Transactions", url: "/payments/transactions" },
+      ],
+    },
+
+    {
+      title: "Shipping",
+      icon: Truck,
+      items: [
+        { title: "Shipping Zones", url: "/shipping/zones" },
+        { title: "Shipping Rates", url: "/shipping/rates" },
+      ],
+    },
+
+    {
+      title: "Taxes",
+      icon: Landmark,
+      items: [
+        { title: "Tax Rules", url: "/taxes/rules" },
+        { title: "GST / VAT Reports", url: "/taxes/reports" },
+      ],
+    },
+
+    {
+      title: "Users & Roles",
+      icon: ShieldCheck,
+      items: [
+        { title: "Users", url: "/users" },
+        { title: "Roles & Permissions", url: "/roles" },
+      ],
+    },
+  ]
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -119,64 +176,50 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarGroup>
           <SidebarMenu className="gap-1">
             {data.navMain.map((item) => {
-              const hasUrl = !!item.url;
               const isGroupActive =
-                item.items?.some((sub) => pathname.startsWith(sub.url)) ??
-                false;
-              const hasItems = item.items && item.items.length > 0;
+                item.items?.some(
+                  (sub) =>
+                    pathname === sub.url ||
+                    pathname.startsWith(sub.url + "/")
+                ) ?? false;
+
+              const Icon = item.icon;
+
               return (
                 <Collapsible
                   key={item.title}
-                  defaultOpen={hasUrl ? pathname === item.url : isGroupActive}
+                  defaultOpen={isGroupActive}
                   className="group/collapsible"
                 >
                   <SidebarMenuItem>
                     <CollapsibleTrigger asChild>
-                      {hasUrl ? (
-                        <SidebarMenuButton
-                          asChild
-                          className={cn(
-                            "font-medium",
-                            pathname === item.url &&
-                              "bg-accent text-accent-foreground"
-                          )}
-                        >
-                          <Link href={item.url!}>
-                            {item.title}
-                            {hasItems && (
-                              <>
-                                <Plus className="ml-auto group-data-[state=open]/collapsible:hidden" />
-                                <Minus className="ml-auto group-data-[state=closed]/collapsible:hidden" />
-                              </>
-                            )}
-                          </Link>
-                        </SidebarMenuButton>
-                      ) : (
-                        <SidebarMenuButton
-                          className={cn("cursor-pointer font-medium")}
-                        >
-                          {item.title}
-                          {hasItems && (
-                            <>
-                              <Plus className="ml-auto group-data-[state=open]/collapsible:hidden" />
-                              <Minus className="ml-auto group-data-[state=closed]/collapsible:hidden" />
-                            </>
-                          )}
-                        </SidebarMenuButton>
-                      )}
+                      <SidebarMenuButton className="font-medium">
+                        {Icon && <Icon className="size-4" />}
+                        <span>{item.title}</span>
+                        {item.items && (
+                          <>
+                            <Plus className="ml-auto group-data-[state=open]/collapsible:hidden" />
+                            <Minus className="ml-auto group-data-[state=closed]/collapsible:hidden" />
+                          </>
+                        )}
+                      </SidebarMenuButton>
                     </CollapsibleTrigger>
-                    {hasItems && (
+
+                    {item.items && (
                       <CollapsibleContent>
                         <SidebarMenuSub>
-                          {item.items!.map((subItem) => {
-                            const isSubActive = pathname === subItem.url;
+                          {item.items.map((subItem) => {
+                            const isSubActive =
+                              pathname === subItem.url ||
+                              pathname.startsWith(subItem.url + "/");
+
                             return (
                               <SidebarMenuSubItem key={subItem.title}>
                                 <SidebarMenuSubButton
                                   asChild
                                   className={cn(
                                     isSubActive &&
-                                      "bg-accent text-accent-foreground"
+                                    "bg-accent text-accent-foreground"
                                   )}
                                 >
                                   <Link href={subItem.url}>

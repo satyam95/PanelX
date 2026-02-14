@@ -11,7 +11,7 @@ export function SearchForm({ ...props }: React.ComponentProps<"form">) {
   return (
     <form {...props}>
       <SidebarGroup className="py-0">
-        <SidebarGroupContent className="relative">
+        <SidebarGroupContent className="relative w-84">
           <Label htmlFor="search" className="sr-only">
             Search
           </Label>
