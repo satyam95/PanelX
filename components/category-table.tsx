@@ -10,10 +10,6 @@ import {
   TableRow,
 } from "./ui/table";
 
-type CategoryTableProps = {
-  limit?: number;
-};
-
 type CategoryStatus = "Active" | "Inactive";
 
 const statusStyles: Record<CategoryStatus, string> = {
@@ -124,7 +120,7 @@ const dummyCategories: Category[] = [
   },
 ];
 
-export function CategoryTable({ limit }: CategoryTableProps) {
+export function CategoryTable() {
   return (
     <Table className="table-fixed w-full">
       <colgroup>

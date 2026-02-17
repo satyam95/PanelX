@@ -13,10 +13,6 @@ import {
 import { useState } from "react";
 import { CustomerDetailsSheet } from "./customer-details-sheet";
 
-type CustomerTableProps = {
-  limit?: number;
-};
-
 export type Customer = {
   id: string;
   name: string;
@@ -252,7 +248,7 @@ export const customers: Customer[] = [
   },
 ];
 
-export function CustomerTable({ limit }: CustomerTableProps) {
+export function CustomerTable() {
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(
     null,
   );

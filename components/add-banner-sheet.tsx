@@ -1,4 +1,4 @@
-import { CalendarIcon, Image, RotateCcw } from "lucide-react";
+import { CalendarIcon, Image as ImageIcon, RotateCcw } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "./ui/sheet";
@@ -38,7 +38,7 @@ export function AddBannerSheet({ open, onOpenChange }: AddBannerSheetProps) {
               <div className="absolute bottom-0 left-0 w-full">
                 <div className="flex items-center justify-between p-2">
                   <Button className="gap-1.5 h-8" variant="outline" size="sm">
-                    <Image strokeWidth={3} className="h-4 w-4" />
+                    <ImageIcon strokeWidth={3} className="h-4 w-4" />
                     Browse
                   </Button>
                   <Button className="gap-1.5 h-8" variant="outline" size="sm">

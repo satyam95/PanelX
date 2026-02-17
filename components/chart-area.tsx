@@ -1,6 +1,12 @@
 "use client";
 
-import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 import {
   ChartContainer,
@@ -18,6 +24,7 @@ const chartData = [
   { month: "April", desktop: 73 },
   { month: "May", desktop: 209 },
   { month: "June", desktop: 214 },
+  { month: "July", desktop: 295 },
 ];
 
 const chartConfig = {
@@ -30,7 +37,7 @@ const chartConfig = {
 export function ChartArea() {
   return (
     <ChartContainer config={chartConfig}>
-      <AreaChart
+      <BarChart
         accessibilityLayer
         data={chartData}
         margin={{
@@ -57,14 +64,8 @@ export function ChartArea() {
           cursor={false}
           content={<ChartTooltipContent indicator="line" />}
         />
-        <Area
-          dataKey="desktop"
-          type="natural"
-          fill="var(--color-desktop)"
-          fillOpacity={0.4}
-          stroke="var(--color-desktop)"
-        />
-      </AreaChart>
+        <Bar dataKey="desktop" fill="var(--color-desktop)" radius={8} />
+      </BarChart>
     </ChartContainer>
   );
 }

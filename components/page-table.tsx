@@ -10,10 +10,6 @@ import {
   TableRow,
 } from "./ui/table";
 
-type PagesTableProps = {
-  limit?: number;
-};
-
 type PageStatus = "Published" | "Draft" | "Scheduled" | "Trash";
 
 const statusStyles: Record<PageStatus, string> = {
@@ -79,7 +75,7 @@ const dummyPages: {
   },
 ];
 
-export function PagesTable({ limit }: PagesTableProps) {
+export function PagesTable() {
   return (
     <Table className="table-fixed w-full">
       <colgroup>

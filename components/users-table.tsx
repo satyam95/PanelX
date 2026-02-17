@@ -13,10 +13,6 @@ import {
 import { useState } from "react";
 import { UserDetailsSheet } from "./user-details-sheet";
 
-type UsersTableProps = {
-  limit?: number;
-};
-
 type UserStatus = "Active" | "Suspended" | "Invited";
 
 type User = {
@@ -128,7 +124,7 @@ const statusStyles: Record<UserStatus, string> = {
   Invited: "bg-blue-100 text-blue-700",
 };
 
-export function UsersTable({ limit }: UsersTableProps) {
+export function UsersTable() {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [sheetOpen, setSheetOpen] = useState(false);
   return (

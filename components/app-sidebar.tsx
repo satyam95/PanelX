@@ -1,7 +1,23 @@
 "use client";
 
 import * as React from "react";
-import { CreditCard, FileText, Landmark, LayoutDashboard, LucideIcon, Megaphone, Minus, Package, Plus, ShieldCheck, ShoppingCart, Store, Truck, Users } from "lucide-react";
+import { Ubuntu } from "next/font/google";
+import {
+  CreditCard,
+  FileText,
+  Landmark,
+  LayoutDashboard,
+  LucideIcon,
+  Megaphone,
+  Minus,
+  Package,
+  Plus,
+  ShieldCheck,
+  ShoppingCart,
+  Store,
+  Truck,
+  Users,
+} from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -26,6 +42,13 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { NavUser } from "./nav-user";
+import Image from "next/image";
+
+const ubuntu = Ubuntu({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  style: ["normal", "italic"],
+});
 
 interface NavSubItem {
   title: string;
@@ -117,9 +140,7 @@ export const data: SidebarData = {
     {
       title: "Payments",
       icon: CreditCard,
-      items: [
-        { title: "Transactions", url: "/payments/transactions" },
-      ],
+      items: [{ title: "Transactions", url: "/payments/transactions" }],
     },
 
     {
@@ -148,7 +169,7 @@ export const data: SidebarData = {
         { title: "Roles & Permissions", url: "/roles" },
       ],
     },
-  ]
+  ],
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -158,17 +179,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton size="lg" asChild>
-              <Link href="/">
-                <div className="flex aspect-square size-10 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                  <Store strokeWidth={2} className="!size-6" />
-                </div>
-                <div className="flex flex-col gap-0.5 leading-none">
-                  <span className="font-semibold">PanelX</span>
-                  <span className="text-xs">v0.0.1</span>
+              <Link href="/" className="flex items-center p-2 gap-1">
+                <Image src="/logo-x.png" alt="logo" width={40} height={40} />
+                <div className="flex flex-col leading-none">
+                  <div
+                    className={`${ubuntu.className} text-xl font-medium leading-none italic`}
+                  >
+                    Orderly Admin
+                  </div>
+                  <div className="text-xs text-right">v0.0.1</div>
                 </div>
               </Link>
-            </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
@@ -179,8 +200,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               const isGroupActive =
                 item.items?.some(
                   (sub) =>
-                    pathname === sub.url ||
-                    pathname.startsWith(sub.url + "/")
+                    pathname === sub.url || pathname.startsWith(sub.url + "/"),
                 ) ?? false;
 
               const Icon = item.icon;
@@ -211,7 +231,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                           {item.items.map((subItem) => {
                             const isSubActive =
                               pathname === subItem.url ||
-                              pathname.startsWith(subItem.url + "/");
+                              (pathname.startsWith(subItem.url + "/") &&
+                                !item.items?.some(
+                                  (other) =>
+                                    other.url !== subItem.url &&
+                                    pathname.startsWith(other.url),
+                                ));
 
                             return (
                               <SidebarMenuSubItem key={subItem.title}>
@@ -219,7 +244,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                                   asChild
                                   className={cn(
                                     isSubActive &&
-                                    "bg-accent text-accent-foreground"
+                                      "bg-accent text-accent-foreground",
                                   )}
                                 >
                                   <Link href={subItem.url}>

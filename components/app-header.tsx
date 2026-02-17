@@ -18,7 +18,13 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { SearchForm } from "./search-form";
 import { Button } from "./ui/button";
 import Link from "next/link";
-import { Image, Layers, Package, Plus, RotateCcw } from "lucide-react";
+import {
+  Image as ImageIcon,
+  Layers,
+  Package,
+  Plus,
+  RotateCcw,
+} from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -45,13 +51,14 @@ export function AppHeader() {
                   {isLast ? (
                     <BreadcrumbPage>{crumb.title}</BreadcrumbPage>
                   ) : crumb.href ? (
-                    <Link href={crumb.href} className="text-muted-foreground hover:text-foreground">
+                    <Link
+                      href={crumb.href}
+                      className="text-muted-foreground hover:text-foreground"
+                    >
                       {crumb.title}
                     </Link>
                   ) : (
-                    <span className="text-muted-foreground">
-                      {crumb.title}
-                    </span>
+                    <span className="text-muted-foreground">{crumb.title}</span>
                   )}
                 </BreadcrumbItem>
                 {!isLast && <BreadcrumbSeparator />}
@@ -93,7 +100,7 @@ export function AppHeader() {
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
               <Link href="/banners/new">
-                <Image className="mr-2 h-4 w-4" />
+                <ImageIcon className="mr-2 h-4 w-4" />
                 Create Banner
               </Link>
             </DropdownMenuItem>

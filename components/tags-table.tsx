@@ -10,10 +10,6 @@ import {
   TableRow,
 } from "./ui/table";
 
-type TagsTableProps = {
-  limit?: number;
-};
-
 type TagStatus = "Active" | "Inactive";
 
 const statusStyles: Record<TagStatus, string> = {
@@ -113,7 +109,7 @@ const dummyTags: Tag[] = [
   },
 ];
 
-export function TagsTable({ limit }: TagsTableProps) {
+export function TagsTable() {
   return (
     <Table className="table-fixed w-full">
       <colgroup>

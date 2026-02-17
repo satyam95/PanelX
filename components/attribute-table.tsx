@@ -13,13 +13,6 @@ import {
 import { useState } from "react";
 import ConfigureTermsSheet from "./configure-terms-sheet";
 
-type AttributeStatus = "Active" | "Inactive";
-
-const statusStyles: Record<AttributeStatus, string> = {
-  Active: "bg-green-100 text-green-700",
-  Inactive: "bg-gray-100 text-gray-700",
-};
-
 type Attribute = {
   id: number;
   name: string;

@@ -8,7 +8,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Textarea } from "@/components/ui/textarea";
-import { CalendarIcon, Image, RotateCcw, Save } from "lucide-react";
+import { CalendarIcon, Image as ImageIcon, RotateCcw, Save } from "lucide-react";
 
 export default function MyProfilePage() {
   return (
@@ -86,7 +86,7 @@ export default function MyProfilePage() {
                 <div className="absolute bottom-0 left-0 w-full">
                   <div className="flex items-center justify-between p-2">
                     <Button className="gap-1.5 h-8" variant="outline" size="sm">
-                      <Image strokeWidth={3} className="h-4 w-4" />
+                      <ImageIcon strokeWidth={3} className="h-4 w-4" />
                       Browse
                     </Button>
                     <Button className="gap-1.5 h-8" variant="outline" size="sm">

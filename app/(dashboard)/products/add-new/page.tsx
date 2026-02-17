@@ -20,7 +20,7 @@ import {
   CalendarIcon,
   ChevronDown,
   FileText,
-  Image,
+  Image as ImageIcon,
   Plus,
   RotateCcw,
   Send,
@@ -216,7 +216,7 @@ export default function ProductsPage() {
                           variant="outline"
                           size="sm"
                         >
-                          <Image strokeWidth={3} className="h-4 w-4" />
+                          <ImageIcon strokeWidth={3} className="h-4 w-4" />
                           Browse
                         </Button>
                         <Button

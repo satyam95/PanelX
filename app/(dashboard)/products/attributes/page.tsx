@@ -1,6 +1,5 @@
 "use client";
 import AddAttributeSheet from "@/components/add-attribute-sheet";
-import AddCategorySheet from "@/components/add-category-sheet";
 import { AttributeTable } from "@/components/attribute-table";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";

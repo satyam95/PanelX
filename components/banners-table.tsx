@@ -10,10 +10,6 @@ import {
 } from "./ui/table";
 import { Button } from "./ui/button";
 
-type BannersTableProps = {
-  limit?: number;
-};
-
 type BannerStatus = "Published" | "Draft" | "Scheduled" | "Archived";
 
 type Banner = {
@@ -75,7 +71,7 @@ const dummyBanners: Banner[] = [
   },
 ];
 
-export function BannersTable({ limit }: BannersTableProps) {
+export function BannersTable() {
   return (
     <Table className="table-fixed w-full">
       <colgroup>
